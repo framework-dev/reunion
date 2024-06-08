@@ -29,7 +29,7 @@ export default {
   // sidebar: true, // whether to show the sidebar
   // toc: true, // whether to show the table of contents
   pager: false, // whether to show previous & next links in the footer
-  output: "../../shadoof.github.io/crawlitsimage", // path to the output root for build
+  // output: "../../shadoof.github.io/crawlitsimage", // path to the output root for build
   // search: true, // activate search
   // linkify: true, // convert URLs in Markdown to links
   // typographer: false, // smart quotes and other typographic improvements

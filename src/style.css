@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'CenturySchoolbook';
   src: local('Century Schoolbook'),
-  url('../fonts/CenturySchoolbook.woff2') format('woff2'),
-  url('../fonts/CenturySchoolbook.woff') format('woff'),
-  url('../fonts/CenturySchoolbook.ttf') format('ttf')
+    url('../fonts/CenturySchoolbook.woff2') format('woff2'),
+    url('../fonts/CenturySchoolbook.woff') format('woff'),
+    url('../fonts/CenturySchoolbook.ttf') format('ttf')
 }
 
 /*body {
@@ -23,37 +23,48 @@
 
 #display {
   font: 3vw/1.4 CenturySchoolbook, serif;
-  color: black; /* orange is good for debugging */
+  color: black;
+  /* orange is good for debugging */
   font-variant-ligatures: no-common-ligatures;
   margin: 5vw 1vw;
 }
 
 #display p {
-	font-size: 1.5vw;
-	line-height: 1.4;
-	margin-top: .5vw;
-	margin-bottom: 1.5vw;
+  font-size: 1.5vw;
+  line-height: 1.4;
+  margin-top: .5vw;
+  margin-bottom: 1.5vw;
 }
 
 #display em {
   font-style: normal;
   /* font-weight: bold; */
-  color: black; /* darkred is good for debugging with orange */
+  color: black;
+  /* darkred is good for debugging with orange */
 }
 
 #supplytext {
   display: none;
 }
 
-.fade { 
+.fade {
   cursor: pointer;
-  transition: color .7s ease-in-out; /* vendorless fallback */
-  -o-transition: color .7s ease-in-out; /* opera */
-  -ms-transition: color .7s ease-in-out; /* IE 10 */
-  -moz-transition: color .7s ease-in-out; /* Firefox */
-  -webkit-transition: color .7s ease-in-out; /*safari and chrome */
+  transition: color .7s ease-in-out;
+  /* vendorless fallback */
+  -o-transition: color .7s ease-in-out;
+  /* opera */
+  -ms-transition: color .7s ease-in-out;
+  /* IE 10 */
+  -moz-transition: color .7s ease-in-out;
+  /* Firefox */
+  -webkit-transition: color .7s ease-in-out;
+  /*safari and chrome */
 }
 
 .fade:hover {
   color: lightblue;
+}
+
+.none {
+  display: none;
 }

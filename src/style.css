@@ -68,3 +68,7 @@
 .none {
   display: none;
 }
+
+.visible {
+  color: red;
+}

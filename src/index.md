@@ -10,11 +10,11 @@ pager: false
 ```js
 import { config } from "/config.js";
 import { mod, sleep } from "/utils.js";
-// console.log(config); // DEBUG
-var paras = {accented: [], normed: []};
+var paras = [];
 var spels = new Map();
 var displayElem = document.getElementById("display");
 var paraDisplaying;
+// --- preprocessing ---
 function addSpans(supplyHTML, spelNdx) {
   let paraSpels = [];
   let spelStart = supplyHTML.search(/\S/); // find the first nonwhitespace
@@ -30,8 +30,8 @@ function addSpans(supplyHTML, spelNdx) {
     let spelId = spelStr.normalize("NFD").replace(/[\u0300-\u036f]/g, "") + `_${spelNdx++}`;
     // wrap the spel we've found in span tags
     let spelHTML = `<span id="${spelId}">${currentHTML}</span>`
-    spels.set(spelId, {string: spelStr, html: spelHTML});
-    paraSpels.push(spelHTML); // add this to paraSpels
+    spels.set(spelId, {string: spelStr, html: spelHTML, normed: spelHTML.normalize("NFD").replace(/[\u0300-\u036f]/g, "")});
+    paraSpels.push(spelId); // add ids to paraSpels
     supplyHTML = supplyHTML.substr(spelEnd); // put the rest in supplyHTML
     spelStart = supplyHTML.search(/\S/); // find the next nonwhitespace (if any)
   }
@@ -43,59 +43,35 @@ async function preProc(paraPicked) {
   let supplyParas = await FileAttachment("/data/supplyHTML.json").json();
   let spelNdx = 0;
   for (var i = 0; i < supplyParas.length; i++) {
-    let innerSpels = addSpans(supplyParas[i], spelNdx);
+    let innerSpels = await addSpans(supplyParas[i], spelNdx);
     // console.log(spelNdx, innerSpels.length); // DEBUG
     spelNdx += innerSpels.length;
-    paras.accented.push(innerSpels);
-    let normedSpels = [];
-    for (var j = 0; j < innerSpels.length; j++) {
-      normedSpels.push(innerSpels[j].normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
-    }
-    paras.normed.push(normedSpels);
+    paras.push(innerSpels);
     let p = document.createElement("p");
-    p.setAttribute("id", i);
+    p.setAttribute("id", i); // id is a para(graph) number
     if (i == paraPicked) {
       p.setAttribute("class", "fade");
       paraPicked = p;
      } else { p.setAttribute("class", "fade none"); }
-    p.addEventListener("mouseenter", () => p.innerHTML = paras.accented[p.id].join(" "));
-    p.addEventListener("mouseleave", () => p.innerHTML = paras.normed[p.id].join(" "));
+    p.addEventListener("mouseenter", () => {p.innerHTML = paras[p.id].reduce((a, c) => a + " " + spels.get(c).html, ""); toggleEmViz(p);});
+    p.addEventListener("mouseleave", () => p.innerHTML = paras[p.id].reduce((a, c) => a + " " + spels.get(c).normed, ""))
     // console.log(paras.normed); // DEBUG
-    p.innerHTML = innerSpels.join(" ");
+    p.innerHTML = paras[p.id].reduce((a, c) => a + " " + spels.get(c).normed, "");
     displayElem.appendChild(p);
   }
   return paraPicked;
 }
+function toggleEmViz(p) {
+  let spans = Array.from(p.getElementsByTagName("span"));
+  let ems = []
+  spans.forEach(span => ems = ems.concat(Array.from(span.getElementsByTagName("em"))));
+  ems.forEach((em => em.classList.add("visible")));
+}
 paraDisplaying = preProc(0);
-console.log(spels, paras); // DEBUG
+console.log(paras, spels); // DEBUG
+// --- Preprocessing alignment ---
 const tstamps = await FileAttachment("/data/limageinhii.json").json();
-// function buildTstamps(verseNames, verses) {
-//   let obj = {};
-//   let errorflag = false;
-//   for (const [idx, verse] of verseNames.entries()) {
-//     if (tstamps[verse] == undefined) continue; // allows pre-processing to complete before timestamps
-//     let a = [];
-//     for (let i = 0; i < tstamps[verse].length; i++) {
-//       let obj = { ...tstamps[verse][i] };
-//       let w = tstamps[verse][i].word;
-//       let spIdx = verses[verse].start + i;
-//       obj.word = w.trim() + "_" + spIdx;
-//       if (!spels.has(obj.word)) {
-//         console.log("tstamp obj.word not found in spels:", verse, obj.word);
-//         errorflag = true;
-//       }
-//       a.push(obj);
-//     }
-//     obj[verse] = a;
-//   }
-//   if (errorflag) {
-//     console.log("spels:", spels);
-//     throw new Error("problems above while builtTstamps()");
-//   }
-//   return obj;
-// }
 function alignedSpels(alignmentJSON, spelNdx) {
-  // OLD let allWords = alignmentJSON.slice(slcStart, slcEnd)
   // build aligned spels
   let aSpels = [];
   alignmentJSON.forEach((alignedWord, idx) => {
@@ -117,6 +93,7 @@ function alignedSpels(alignmentJSON, spelNdx) {
   });
   return aSpels;
 }
+// --- building linear scores ---
 function linearScrs(numParas) {
   let scores = [];
   let spelNdx = 0;
@@ -132,8 +109,9 @@ function linearScrs(numParas) {
   }
   return scores;
 }
-var scores = linearScrs(1);
+var scores = linearScrs(1); // EDIT number of scores built depends on this argument
 // console.log(spels, scores[0], spels.has("last_0")); // DEBUG
+// --- animation, based on the play() method in observablehq.com/@shadoof/sounding ---
 async function play() {
   let idx,
     loopCount,
@@ -148,33 +126,14 @@ async function play() {
   loopCount = 0;
   console.log("entered play()");
   await sleep(config.interScore); // an initial pause
-  // for (const key of spels.keys()) {
-  //   let elem = document.getElementById(key);
-  //   if (elem.classList.contains("visible"))
-  //     await elem.classList.toggle("visible");
-  // }
   await sleep(config.interCycle); // an initial pause
   let prevScore;
   let debugStartingPoint = config.debugStartingPoint;
   if (debugStartingPoint != -1) {
     console.log("debugging from ", debugStartingPoint);
-    // scoreSetName = debugStartingPoint.substring(0, 4);
-    // toggle = false;
-    // if (scoreSetName == "ainh") {
-    //   scoreSet = scores_ainh;
-    //   ainhIdx = mod(
-    //     parseInt(debugStartingPoint.substring(4)) - 2,
-    //     scores_ainh.length
-    //   );
-    // } else {
-    //   scoreSet = scores_hina;
-    //   hinaIdx = mod(
-    //     parseInt(debugStartingPoint.substring(4)) - 2,
-    //     scores_hina.length
-    //   );
-    // }
-  } else scoreNum = debugStartingPoint;
-  while (config.running) {
+    // --- this DEBUG option not implemented
+  } else scoreNum = debugStartingPoint; // expects -1
+  while (config.running) { // stopped with false in config
     // loop forever ...
     loopMsg = `loop: ${loopCount++}`;
     // bump scoreNum appropriately
@@ -225,25 +184,39 @@ async function play() {
       console.log(yieldMsg); // (in other contexts:) yield yieldMsg;
       //
       // these next lines do all the work:
-      // unless scored_pause: trigger fade in/out:
+      // unless there is a scored pause: trigger fade in/out:
       if (spelId !== "PAUSE") {
+//        let accentedEm = "";
         let elem = document.getElementById(spelId);
-        elem.classList.toggle("visible");
+        elem.classList.add("visible");
+        let emElems = elem.getElementsByTagName("em");
+        let emElem, newInner = "";
+        if (emElems && emElems.length == 1) {
+          emElem = emElems.item(0);
+          newInner = accentedEm(spelId, emElem);
+          if (newInner != "") emElem.innerText = newInner;
+          emElem.classList.add("visible");
+        }
         if (autopause > 0) {
           let ridx = mod(idx - numWords, score.length);
           autopause += score[idx].pause - score[ridx].pause;
-          sleep(autopause).then(() =>
-            elem.classList.toggle("visible")
-          );
+          sleep(autopause).then(() => {
+            elem.classList.remove("visible");
+            if (emElem) emElem.classList.remove("visible");
+           if (newInner != "") sleep(200).then(() => elem.innerHTML = spels.get(spelId).normed);
+          });
         }
       }
       await sleep(score[idx].pause); // pauses usually taken from the temporal data
     } // end of loop thru current score
     interScoreDelay = config.interScore;
     await sleep(interScoreDelay); // pause between scores
-    // single scoreSet loop ended here: } // end of loop thru scores (plural)
-    // no cycle when using double scoreSet: await Promises.delay(config.interCycle * 10); // pause between cycle of scores
   } // end of (endless) while loop
+}
+function accentedEm(spelId, emElem) {
+  let inner = emElem.innnerText;
+  let accented = spels.get(spelId).html.match(/<em>(.*)<\/em>/)[1];
+  return inner == accented ? "" : accented;
 }
 play();
 ```

@@ -6,6 +6,12 @@
     url('../fonts/CenturySchoolbook.ttf') format('ttf')
 }
 
+:root {
+  --em: black;
+  --text: #AAAAAA;
+  --context: #39CCEE;
+}
+
 /*body {
   font: 1.8vw CenturySchoolbook, serif;
   color: black;
@@ -21,17 +27,22 @@
 	color: #666;
 } */
 
+span {
+  transition: color .7s ease-in-out;
+  -o-transition: color .7s ease-in-out;
+  -ms-transition: color .7s ease-in-out;
+  -moz-transition: color .7s ease-in-out;
+  -webkit-transition: color .7s ease-in-out;
+}
+
 #display {
-  font: 3vw/1.4 CenturySchoolbook, serif;
-  color: black;
-  /* orange is good for debugging */
+  font: 1.8vw/1.4 CenturySchoolbook, serif;
+  color: var(--text);
   font-variant-ligatures: no-common-ligatures;
   margin: 5vw 1vw;
 }
 
 #display p {
-  font-size: 1.5vw;
-  line-height: 1.4;
   margin-top: .5vw;
   margin-bottom: 1.5vw;
 }
@@ -39,7 +50,18 @@
 #display em {
   font-style: normal;
   /* font-weight: bold; */
-  color: black;
+  /* darkred is good for debugging with orange */
+  transition: color .7s ease-in-out;
+  -o-transition: color .7s ease-in-out;
+  -ms-transition: color .7s ease-in-out;
+  -moz-transition: color .7s ease-in-out;
+  -webkit-transition: color .7s ease-in-out;
+}
+
+#display em.visible {
+  font-style: normal;
+  /* font-weight: bold; */
+  color: var(--em);
   /* darkred is good for debugging with orange */
 }
 
@@ -49,20 +71,10 @@
 
 .fade {
   cursor: pointer;
-  transition: color .7s ease-in-out;
-  /* vendorless fallback */
-  -o-transition: color .7s ease-in-out;
-  /* opera */
-  -ms-transition: color .7s ease-in-out;
-  /* IE 10 */
-  -moz-transition: color .7s ease-in-out;
-  /* Firefox */
-  -webkit-transition: color .7s ease-in-out;
-  /*safari and chrome */
 }
 
 .fade:hover {
-  color: lightblue;
+  color: var(--context);
 }
 
 .none {
@@ -70,5 +82,10 @@
 }
 
 .visible {
-  color: red;
+  color: var(--context);
+  /* transition: color .7s ease-in-out;
+  -o-transition: color .7s ease-in-out;
+  -ms-transition: color .7s ease-in-out;
+  -moz-transition: color .7s ease-in-out;
+  -webkit-transition: color .7s ease-in-out; */
 }

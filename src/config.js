@@ -17,7 +17,7 @@ const config = {
   interScore: 200,
   scoredPause: 100,
   slower: 0,
-  wordsShown: 11,
-  debugStartingPoint: -1 // leave as -1 if not debugging
+  startingPoint: 0,
+  wordsShown: 11
 }
 export { config };

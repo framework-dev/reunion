@@ -7,16 +7,26 @@
 }
 
 :root {
-  --em: black;
+  /* dark on light */
+  /* --bkgnd: #fffff5; */
+  /* --context: #39CCEE; */
+  /* --em: black; */
   --text: #AAAAAA;
-  --context: #39CCEE;
+  /* -------------- */
+  /* light on dark */
+  --em: white;
+  --context: #af5c13;
+  --bkgnd: black;
+  /* possible clrs.cc blues #0074D9 lighter #7FDBFF teal #39CCCC */
 }
 
-/*body {
-  font: 1.8vw CenturySchoolbook, serif;
-  color: black;
-  margin: 5vw 15vw;
-}*/
+html {
+  background-color: var(--bkgnd);
+}
+
+body {
+  background-color: var(--bkgnd);
+}
 
 /* h2 {
 	font-size: 100%;
@@ -36,13 +46,17 @@ span {
 }
 
 #display {
-  font: 1.8vw/1.4 CenturySchoolbook, serif;
+  font: 2vw/1.4 CenturySchoolbook, serif;
   color: var(--text);
   font-variant-ligatures: no-common-ligatures;
   margin: 5vw 1vw;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 #display p {
+  min-width: 100%;
   margin-top: .5vw;
   margin-bottom: 1.5vw;
 }

@@ -9,12 +9,21 @@ pager: false
 ---
 ```js
 import { config } from "/config.js";
+config.startingPoint = 0; // DEBUG when RECORDING & REDUCTING EDIT here
+config.numParas = 8; // DEBUG and here: number of scores built depends on this
+config.running = true; // DEBUG
 import { mod, sleep } from "/utils.js";
-var paras = [];
-var spels = new Map();
 var displayElem = document.getElementById("display");
 var paraDisplaying;
+var paras = [];
+var scores;
+var spels = new Map();
 // --- preprocessing ---
+const tstamps = await FileAttachment("/data/limageinhii.json").json();
+paraDisplaying = await preProc(config.startingPoint);
+scores = await linearScrs(config.startingPoint, config.numParas);
+console.log(spels, paras, scores); // DEBUG
+// --- preprocessing functions ---
 function addSpans(supplyHTML, spelNdx) {
   let paraSpels = [];
   let spelStart = supplyHTML.search(/\S/); // find the first nonwhitespace
@@ -67,12 +76,10 @@ function toggleEmViz(p) {
   spans.forEach(span => ems = ems.concat(Array.from(span.getElementsByTagName("em"))));
   ems.forEach((em => em.classList.add("visible")));
 }
-paraDisplaying = preProc(0);
-console.log(paras, spels); // DEBUG
-// --- Preprocessing alignment ---
-const tstamps = await FileAttachment("/data/limageinhii.json").json();
-function alignedSpels(alignmentJSON, spelNdx) {
+// --- preprocessing alignment ---
+function alignedSpels(alignmentJSON, paraNum, spelNdx) {
   // build aligned spels
+  // console.log("entered alignedSpels()"); // DEBUG
   let aSpels = [];
   alignmentJSON.forEach((alignedWord, idx) => {
     // get length of time taken to pronounce word:
@@ -83,9 +90,9 @@ function alignedSpels(alignmentJSON, spelNdx) {
       p = p + (alignmentJSON[idx + 1].start - alignedWord.end);
     }
     p = Math.round(p * 100); // convert to hundreths
-    // in this project all spell id's are unique because serial numbers have been added
+    // in this project all spell id's are unique because serial numbers are added
     let spelId = alignedWord.word.trim() + "_" + spelNdx++;
-    if (!spels.has(spelId)) console.log("alignment problem at: ", spelId);
+    if (!spels.has(spelId)) console.log(`alignment problem at: ${spelId} in para: ${paraNum}`);
     aSpels.push({
       id: spelId,
       pause: p + config.slower
@@ -94,11 +101,13 @@ function alignedSpels(alignmentJSON, spelNdx) {
   return aSpels;
 }
 // --- building linear scores ---
-function linearScrs(numParas) {
+function linearScrs(startingPara, numParas) {
   let scores = [];
-  let spelNdx = 0;
+  let firstSpelId = paras[startingPara][0];
+  // console.log(firstSpelId, firstSpelId.match(/\d+/)[0]); // DEBUG
+  let spelNdx = parseInt(firstSpelId.match(/\d+/)[0]);
   for (let i = 0; i < numParas; i++) {
-    let a = alignedSpels(tstamps[i], spelNdx);
+    let a = alignedSpels(tstamps[startingPara + i], startingPara + i, spelNdx);
     spelNdx += a.length;
     // adding autofade here
     a.unshift({
@@ -109,8 +118,7 @@ function linearScrs(numParas) {
   }
   return scores;
 }
-var scores = linearScrs(1); // EDIT number of scores built depends on this argument
-// console.log(spels, scores[0], spels.has("last_0")); // DEBUG
+//
 // --- animation, based on the play() method in observablehq.com/@shadoof/sounding ---
 async function play() {
   let idx,
@@ -118,26 +126,20 @@ async function play() {
     loopMsg,
     rdnScore,
     score,
-    scoreNum,
+    scoreNum = 0,
     yieldMsg,
     scoreName,
-    interScoreDelay,
     toggle = true;
   loopCount = 0;
   console.log("entered play()");
-  await sleep(config.interScore); // an initial pause
   await sleep(config.interCycle); // an initial pause
   let prevScore;
-  let debugStartingPoint = config.debugStartingPoint;
-  if (debugStartingPoint != -1) {
-    console.log("debugging from ", debugStartingPoint);
-    // --- this DEBUG option not implemented
-  } else scoreNum = debugStartingPoint; // expects -1
+  let paraNum = config.startingPoint;
   while (config.running) { // stopped with false in config
     // loop forever ...
     loopMsg = `loop: ${loopCount++}`;
-    // bump scoreNum appropriately
-    scoreNum = ++scoreNum % scores.length
+    // show current paragraph
+    document.getElementById(paraNum).classList.remove("none");
     //
     // (currently) unused mechanism for generating quasi-random scores on the fly (see 'Uchaf'):
     if (typeof scores[scoreNum] === "string") {
@@ -179,7 +181,7 @@ async function play() {
       }
       // provide some info:
       yieldMsg =
-        loopMsg + `, score: ${scoreNum + 1}, item: ${idx}, id: ${spelId}, `;
+        loopMsg + `, score: ${scoreNum}, item: ${idx}, paraNum: ${paraNum}, id: ${spelId}, `;
       yieldMsg += `string: '${str}', pause: ${score[idx].pause}`;
       console.log(yieldMsg); // (in other contexts:) yield yieldMsg;
       //
@@ -209,8 +211,15 @@ async function play() {
       }
       await sleep(score[idx].pause); // pauses usually taken from the temporal data
     } // end of loop thru current score
-    interScoreDelay = config.interScore;
-    await sleep(interScoreDelay); // pause between scores
+    await sleep(config.interScore); // pause between scores
+    // remove old paragraph:
+    document.getElementById(paraNum).classList.add("none");
+    // bump paraNum
+    paraNum = ++paraNum;
+    if (paraNum >= (config.numParas + config.startingPoint)) paraNum = config.startingPoint;
+    // bump scoreNum
+    scoreNum = ++scoreNum % scores.length;
+
   } // end of (endless) while loop
 }
 function accentedEm(spelId, emElem) {

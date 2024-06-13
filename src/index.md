@@ -10,7 +10,7 @@ pager: false
 ```js
 import { config } from "/config.js";
 config.startingPoint = 0; // DEBUG when RECORDING & REDUCTING EDIT here
-config.numParas = 10; // DEBUG and here: number of scores built depends on this
+config.numParas = 11; // DEBUG and here: number of scores built depends on this
 config.running = true; // DEBUG
 import { mod, sleep } from "/utils.js";
 var displayElem = document.getElementById("display");

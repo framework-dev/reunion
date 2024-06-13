@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'CenturySchoolbook';
   src: local('Century Schoolbook'),
-    url('../fonts/CenturySchoolbook.woff2') format('woff2'),
-    url('../fonts/CenturySchoolbook.woff') format('woff'),
-    url('../fonts/CenturySchoolbook.ttf') format('ttf')
+    url('/data/CenturySchoolbook.woff2') format('woff2'),
+    url('/data/CenturySchoolbook.woff') format('woff'),
+    url('/data/CenturySchoolbook.ttf') format('ttf')
 }
 
 :root {
@@ -25,17 +25,10 @@ html {
 }
 
 body {
+  color: var(--text);
   background-color: var(--bkgnd);
+  cursor: none;
 }
-
-/* h2 {
-	font-size: 100%;
-	margin-top: .4vw;
-	margin-bottom: 1.6vw;
-	letter-spacing: .3em;
-	border-bottom: 1px dotted #7f7f7f;
-	color: #666;
-} */
 
 span {
   transition: color .7s ease-in-out;
@@ -43,6 +36,28 @@ span {
   -ms-transition: color .7s ease-in-out;
   -moz-transition: color .7s ease-in-out;
   -webkit-transition: color .7s ease-in-out;
+}
+
+#byline {
+  margin: 1vw auto;
+  text-align: center;
+  z-index: 10;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .5s ease-in-out 0s;
+}
+
+#byline:hover {
+  opacity: 1;
+}
+
+#byline a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+#byline a:hover {
+  color: lightgray;
 }
 
 #display {
@@ -53,12 +68,12 @@ span {
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
-}
-
-#display p {
-  min-width: 100%;
-  margin-top: .5vw;
-  margin-bottom: 1.5vw;
+  opacity: 0;
+  transition: opacity 2.5s ease-in-out;
+  -o-transition: opacity 2.5s ease-in-out;
+  -ms-transition: opacity 2.5s ease-in-out;
+  -moz-transition: opacity 2.5s ease-in-out;
+  -webkit-transition: opacity 2.5s ease-in-out;
 }
 
 #display em {
@@ -79,10 +94,6 @@ span {
   /* darkred is good for debugging with orange */
 }
 
-#supplytext {
-  display: none;
-}
-
 .fade {
   cursor: pointer;
 }
@@ -97,9 +108,4 @@ span {
 
 .visible {
   color: var(--context);
-  /* transition: color .7s ease-in-out;
-  -o-transition: color .7s ease-in-out;
-  -ms-transition: color .7s ease-in-out;
-  -moz-transition: color .7s ease-in-out;
-  -webkit-transition: color .7s ease-in-out; */
 }

@@ -2,7 +2,7 @@
 title: l’Image
 toc: false
 head: "<link rel='stylesheet' href='style.css' type='text/css' media='all' />"
-header: '<h2 style="margin-top: 3vw;">&nbsp;‘<span style="color: black;">l’Image</span>’ in <em>How It Is</em></h2>'
+header: false
 footer: false
 sidebar: false
 pager: false
@@ -14,15 +14,19 @@ config.numParas = 8; // DEBUG and here: number of scores built depends on this
 config.running = true; // DEBUG
 import { mod, sleep } from "/utils.js";
 var displayElem = document.getElementById("display");
-var paraDisplaying;
-var paras = [];
+var paraNum;
+var paras;
 var scores;
 var spels = new Map();
-// --- preprocessing ---
+const supplyParas = await FileAttachment("/data/supplyHTML.json").json();
 const tstamps = await FileAttachment("/data/limageinhii.json").json();
-paraDisplaying = await preProc(config.startingPoint);
-scores = await linearScrs(config.startingPoint, config.numParas);
+// --- preprocessing ---
+paras = await preProc(supplyParas);
+scores = await linearScrs(tstamps, config.startingPoint, config.numParas);
 console.log(spels, paras, scores); // DEBUG
+// NEW
+displayElem.addEventListener("mouseenter", () => {displayElem.innerHTML = paras[paraNum].reduce((a, c) => a + " " + spels.get(c).html, ""); toggleEmViz(displayElem);});
+displayElem.addEventListener("mouseleave", () => displayElem.innerHTML = paras[paraNum].reduce((a, c) => a + " " + spels.get(c).normed, ""));
 // --- preprocessing functions ---
 function addSpans(supplyHTML, spelNdx) {
   let paraSpels = [];
@@ -47,37 +51,38 @@ function addSpans(supplyHTML, spelNdx) {
   // console.log(paraSpels); // DEBUG
   return paraSpels;
 }
-async function preProc(paraPicked) {
+async function preProc(_supplyParas) {
   // console.log("preProc"); // DEBUG
-  let supplyParas = await FileAttachment("/data/supplyHTML.json").json();
   let spelNdx = 0;
-  for (var i = 0; i < supplyParas.length; i++) {
-    let innerSpels = await addSpans(supplyParas[i], spelNdx);
-    // console.log(spelNdx, innerSpels.length); // DEBUG
-    spelNdx += innerSpels.length;
-    paras.push(innerSpels);
-    let p = document.createElement("p");
-    p.setAttribute("id", i); // id is a para(graph) number
-    if (i == paraPicked) {
-      p.setAttribute("class", "fade");
-      paraPicked = p;
-     } else { p.setAttribute("class", "fade none"); }
-    p.addEventListener("mouseenter", () => {p.innerHTML = paras[p.id].reduce((a, c) => a + " " + spels.get(c).html, ""); toggleEmViz(p);});
-    p.addEventListener("mouseleave", () => p.innerHTML = paras[p.id].reduce((a, c) => a + " " + spels.get(c).normed, ""))
-    // console.log(paras.normed); // DEBUG
-    p.innerHTML = paras[p.id].reduce((a, c) => a + " " + spels.get(c).normed, "");
-    displayElem.appendChild(p);
+  let _paras = [];
+  for (var i = 0; i < _supplyParas.length; i++) {
+    let paraSpels = await addSpans(_supplyParas[i], spelNdx);
+    // console.log(spelNdx, paraSpels.length); // DEBUG
+    spelNdx += paraSpels.length;
+    _paras.push(paraSpels);
+    // OLD
+    // let p = document.createElement("p");
+    // p.setAttribute("id", i); // id is a para(graph) number
+    // if (i == paraPicked) {
+    //   p.setAttribute("class", "fade");
+    //   paraPicked = p;
+    //  } else { p.setAttribute("class", "fade none"); }
+    // p.addEventListener("mouseenter", () => {p.innerHTML = paras[p.id].reduce((a, c) => a + " " + spels.get(c).html, ""); toggleEmViz(p);});
+    // p.addEventListener("mouseleave", () => p.innerHTML = paras[p.id].reduce((a, c) => a + " " + spels.get(c).normed, ""))
+    // // console.log(paras.normed); // DEBUG
+    // p.innerHTML = paras[p.id].reduce((a, c) => a + " " + spels.get(c).normed, "");
+    // displayElem.appendChild(p);
   }
-  return paraPicked;
+  return _paras;
 }
-function toggleEmViz(p) {
-  let spans = Array.from(p.getElementsByTagName("span"));
+function toggleEmViz(elem) {
+  let spans = Array.from(elem.getElementsByTagName("span"));
   let ems = []
   spans.forEach(span => ems = ems.concat(Array.from(span.getElementsByTagName("em"))));
   ems.forEach((em => em.classList.add("visible")));
 }
 // --- preprocessing alignment ---
-function alignedSpels(alignmentJSON, paraNum, spelNdx) {
+function alignedSpels(alignmentJSON, _paraNum, spelNdx) {
   // build aligned spels
   // console.log("entered alignedSpels()"); // DEBUG
   let aSpels = [];
@@ -92,7 +97,7 @@ function alignedSpels(alignmentJSON, paraNum, spelNdx) {
     p = Math.round(p * 100); // convert to hundreths
     // in this project all spell id's are unique because serial numbers are added
     let spelId = alignedWord.word.trim() + "_" + spelNdx++;
-    if (!spels.has(spelId)) console.log(`alignment problem at: ${spelId} in para: ${paraNum}`);
+    if (!spels.has(spelId)) console.log(`alignment problem at: ${spelId} in para: ${_paraNum}`);
     aSpels.push({
       id: spelId,
       pause: p + config.slower
@@ -101,13 +106,13 @@ function alignedSpels(alignmentJSON, paraNum, spelNdx) {
   return aSpels;
 }
 // --- building linear scores ---
-function linearScrs(startingPara, numParas) {
+function linearScrs(_tstamps, startingPara, numParas) {
   let scores = [];
   let firstSpelId = paras[startingPara][0];
   // console.log(firstSpelId, firstSpelId.match(/\d+/)[0]); // DEBUG
   let spelNdx = parseInt(firstSpelId.match(/\d+/)[0]);
   for (let i = 0; i < numParas; i++) {
-    let a = alignedSpels(tstamps[startingPara + i], startingPara + i, spelNdx);
+    let a = alignedSpels(_tstamps[startingPara + i], startingPara + i, spelNdx);
     spelNdx += a.length;
     // adding autofade here
     a.unshift({
@@ -134,12 +139,15 @@ async function play() {
   console.log("entered play()");
   await sleep(config.interCycle); // an initial pause
   let prevScore;
-  let paraNum = config.startingPoint;
+  paraNum = config.startingPoint;
   while (config.running) { // stopped with false in config
     // loop forever ...
     loopMsg = `loop: ${loopCount++}`;
     // show current paragraph
-    document.getElementById(paraNum).classList.remove("none");
+    displayElem.innerHTML = paras[paraNum].reduce((a, c) => a + " " + spels.get(c).normed, ""); // NEW
+    // document.getElementById(paraNum).classList.remove("none"); // OLD
+    displayElem.style.opacity = 1;
+    await sleep(300);
     //
     // (currently) unused mechanism for generating quasi-random scores on the fly (see 'Uchaf'):
     if (typeof scores[scoreNum] === "string") {
@@ -211,9 +219,11 @@ async function play() {
       }
       await sleep(score[idx].pause); // pauses usually taken from the temporal data
     } // end of loop thru current score
-    await sleep(config.interScore); // pause between scores
+    await sleep(autopause + config.interScore); // pause between scores
     // remove old paragraph:
-    document.getElementById(paraNum).classList.add("none");
+    displayElem.style.opacity = 0;
+    await sleep(300);
+    // document.getElementById(paraNum).classList.add("none"); // OLD
     // bump paraNum
     paraNum = ++paraNum;
     if (paraNum >= (config.numParas + config.startingPoint)) paraNum = config.startingPoint;
@@ -229,4 +239,16 @@ function accentedEm(spelId, emElem) {
 }
 play();
 ```
-<div id="display"></div>
+<!-- Version 1.0 for ELO 2024 -->
+<div id="byline">
+  <span id="bytext"><cite>Crawl It’s Image</cite> &nbsp;&nbsp;&nbsp;
+  <a href="https://programmatology.com/?p=contents/bio.html">John Cayley</a>&nbsp; • &nbsp;</span>
+  <span style="font-size: 1.2vw;">
+    static version: &nbsp;
+    <a href="https://programmatology.com/imagegen/webapps/limage_in_hii.html">“l’Image” in <cite>How It Is</cite></a>&nbsp; • &nbsp;
+    related live-code notebooks: &nbsp;
+    <a href="https://observablehq.com/@shadoof/hospitable-narratives-1">Static version composition</a>&nbsp; • &nbsp;
+    <a href="https://observablehq.com/@shadoof/commenttis/">Letteral gram finder</a>
+  </span>
+</div>
+<div id="display" class="fade"></div>

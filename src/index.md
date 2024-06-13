@@ -10,7 +10,7 @@ pager: false
 ```js
 import { config } from "/config.js";
 config.startingPoint = 0; // DEBUG when RECORDING & REDUCTING EDIT here
-config.numParas = 11; // DEBUG and here: number of scores built depends on this
+config.numParas = 13; // DEBUG and here: number of scores built depends on this
 config.running = true; // DEBUG
 import { mod, sleep } from "/utils.js";
 var displayElem = document.getElementById("display");
@@ -23,7 +23,7 @@ const tstamps = await FileAttachment("/data/limageinhii.json").json();
 // --- preprocessing ---
 paras = await preProc(supplyParas);
 scores = await linearScrs(tstamps, config.startingPoint, config.numParas);
-console.log(spels, paras, scores); // DEBUG
+console.log("--- preprocessing done ---", spels); // DEBUG , paras, scores
 // NEW
 displayElem.addEventListener("mouseenter", () => {displayElem.innerHTML = paras[paraNum].reduce((a, c) => a + " " + spels.get(c).html, ""); toggleEmViz(displayElem);});
 displayElem.addEventListener("mouseleave", () => displayElem.innerHTML = paras[paraNum].reduce((a, c) => a + " " + spels.get(c).normed, ""));
@@ -246,9 +246,9 @@ play();
   <span style="font-size: 1.2vw;">
     static version: &nbsp;
     <a href="https://programmatology.com/imagegen/webapps/limage_in_hii.html">“l’Image” in <cite>How It Is</cite></a>&nbsp; • &nbsp;
-    related live-code notebooks: &nbsp;
-    <a href="https://observablehq.com/@shadoof/hospitable-narratives-1">Static version composition</a>&nbsp; • &nbsp;
-    <a href="https://observablehq.com/@shadoof/commenttis/">Letteral gram finder</a>
+    live-code notebooks: &nbsp;
+    <a href="https://observablehq.com/@shadoof/hospitable-narratives-1">for composition of static version</a>&nbsp; • &nbsp;
+    <a href="https://observablehq.com/@shadoof/commenttis/">letteral grams finder</a>
   </span>
 </div>
 <div id="display" class="fade"></div>

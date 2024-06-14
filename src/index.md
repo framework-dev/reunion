@@ -10,8 +10,8 @@ pager: false
 ```js
 import { config } from "/config.js";
 // --- DEBUG congiguration
-config.startingPoint = 21; // DEBUG when RECORDING & REDUCTING EDIT here
-config.numParas = 1; // DEBUG and here: number of scores built depends on this
+// config.startingPoint = 21; // DEBUG when RECORDING & REDUCTING EDIT here
+// config.numParas = 1; // DEBUG and here: number of scores built depends on this
 // config.running = false; // DEBUG
 import { mod, sleep, msToTime } from "/utils.js";
 var displayElem = document.getElementById("display");

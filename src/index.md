@@ -9,9 +9,10 @@ pager: false
 ---
 ```js
 import { config } from "/config.js";
-config.startingPoint = 0; // DEBUG when RECORDING & REDUCTING EDIT here
-config.numParas = 13; // DEBUG and here: number of scores built depends on this
-config.running = true; // DEBUG
+// --- DEBUG congiguration
+// config.startingPoint = 21; // DEBUG when RECORDING & REDUCTING EDIT here
+// config.numParas = 1; // DEBUG and here: number of scores built depends on this
+// config.running = false; // DEBUG
 import { mod, sleep } from "/utils.js";
 var displayElem = document.getElementById("display");
 var paraNum;
@@ -21,9 +22,11 @@ var spels = new Map();
 const supplyParas = await FileAttachment("/data/supplyHTML.json").json();
 const tstamps = await FileAttachment("/data/limageinhii.json").json();
 // --- preprocessing ---
+console.log("--- preprocessing begins ---"); // DEBUG
 paras = await preProc(supplyParas);
 scores = await linearScrs(tstamps, config.startingPoint, config.numParas);
-console.log("--- preprocessing done ---", spels); // DEBUG , paras, scores
+console.log(paras[config.startingPoint]); // DEBUG , paras, scores
+console.log("--- preprocessing done ---"); // DEBUG
 // NEW
 displayElem.addEventListener("mouseenter", () => {displayElem.innerHTML = paras[paraNum].reduce((a, c) => a + " " + spels.get(c).html, ""); toggleEmViz(displayElem);});
 displayElem.addEventListener("mouseleave", () => displayElem.innerHTML = paras[paraNum].reduce((a, c) => a + " " + spels.get(c).normed, ""));
@@ -60,18 +63,6 @@ async function preProc(_supplyParas) {
     // console.log(spelNdx, paraSpels.length); // DEBUG
     spelNdx += paraSpels.length;
     _paras.push(paraSpels);
-    // OLD
-    // let p = document.createElement("p");
-    // p.setAttribute("id", i); // id is a para(graph) number
-    // if (i == paraPicked) {
-    //   p.setAttribute("class", "fade");
-    //   paraPicked = p;
-    //  } else { p.setAttribute("class", "fade none"); }
-    // p.addEventListener("mouseenter", () => {p.innerHTML = paras[p.id].reduce((a, c) => a + " " + spels.get(c).html, ""); toggleEmViz(p);});
-    // p.addEventListener("mouseleave", () => p.innerHTML = paras[p.id].reduce((a, c) => a + " " + spels.get(c).normed, ""))
-    // // console.log(paras.normed); // DEBUG
-    // p.innerHTML = paras[p.id].reduce((a, c) => a + " " + spels.get(c).normed, "");
-    // displayElem.appendChild(p);
   }
   return _paras;
 }
@@ -137,15 +128,13 @@ async function play() {
     toggle = true;
   loopCount = 0;
   console.log("entered play()");
-  await sleep(config.interCycle); // an initial pause
   let prevScore;
   paraNum = config.startingPoint;
   while (config.running) { // stopped with false in config
     // loop forever ...
     loopMsg = `loop: ${loopCount++}`;
     // show current paragraph
-    displayElem.innerHTML = paras[paraNum].reduce((a, c) => a + " " + spels.get(c).normed, ""); // NEW
-    // document.getElementById(paraNum).classList.remove("none"); // OLD
+    displayElem.innerHTML = paras[paraNum].reduce((a, c) => a + " " + spels.get(c).normed, "");
     displayElem.style.opacity = 1;
     await sleep(300);
     //
@@ -223,13 +212,20 @@ async function play() {
     // remove old paragraph:
     displayElem.style.opacity = 0;
     await sleep(300);
-    // document.getElementById(paraNum).classList.add("none"); // OLD
     // bump paraNum
     paraNum = ++paraNum;
-    if (paraNum >= (config.numParas + config.startingPoint)) paraNum = config.startingPoint;
+    if (paraNum >= (config.numParas + config.startingPoint)) {
+      console.log("--- end of cycle ---"); // DEBUG
+      paraNum = config.startingPoint;
+      await sleep(config.interCycle); // end of cycle pause
+      let bl = document.getElementById("byline");
+      bl.style.opacity = 1;
+      await sleep(config.creditsPause); // credits pause 7s
+      bl.style.opacity = 0;
+      await sleep(config.interCycle); // end of cycle pause
+    }
     // bump scoreNum
     scoreNum = ++scoreNum % scores.length;
-
   } // end of (endless) while loop
 }
 function accentedEm(spelId, emElem) {
@@ -237,18 +233,20 @@ function accentedEm(spelId, emElem) {
   let accented = spels.get(spelId).html.match(/<em>(.*)<\/em>/)[1];
   return inner == accented ? "" : accented;
 }
-play();
+if (config.running) play();
 ```
 <!-- Version 1.0 for ELO 2024 -->
 <div id="byline">
-  <span id="bytext"><cite>Crawl It’s Image</cite> &nbsp;&nbsp;&nbsp;
-  <a href="https://programmatology.com/?p=contents/bio.html">John Cayley</a>&nbsp; • &nbsp;</span>
-  <span style="font-size: 1.2vw;">
-    static version: &nbsp;
-    <a href="https://programmatology.com/imagegen/webapps/limage_in_hii.html">“l’Image” in <cite>How It Is</cite></a>&nbsp; • &nbsp;
-    live-code notebooks: &nbsp;
-    <a href="https://observablehq.com/@shadoof/hospitable-narratives-1">for composition of static version</a>&nbsp; • &nbsp;
-    <a href="https://observablehq.com/@shadoof/commenttis/">letteral grams finder</a>
-  </span>
+  <div class="clmleft">
+    <span id="bytext"><cite>Crawl It’s Image</cite>&nbsp;&nbsp;•&nbsp;&nbsp;<a href="https://programmatology.com/?p=contents/bio.html">John Cayley</a></span>
+  </div>
+  <div class="clmright">
+    <span style="font-size: 1.2vw;">
+      <cite>static version:</cite> &nbsp;
+      <a href="https://programmatology.com/imagegen/webapps/limage_in_hii.html">“l’Image” in <cite>How It Is</cite></a>&nbsp;&nbsp;•&nbsp;&nbsp;<cite>live-code notebooks:</cite> &nbsp;
+      <a href="https://observablehq.com/@shadoof/hospitable-narratives-1">Workbook for static version</a><br>
+      <cite>&amp;</cite>&nbsp;&nbsp;<a href="https://observablehq.com/@shadoof/commenttis/">Letteral grams finder</a>&nbsp;&nbsp;•&nbsp;&nbsp;<cite>made with:</cite> <a href="https://observablehq.com/framework/">Observable Framework</a>&nbsp;&nbsp;•&nbsp;&nbsp;June 2024
+    </span>
+  </div>
 </div>
 <div id="display" class="fade"></div>

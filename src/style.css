@@ -75,7 +75,8 @@ span {
 }
 
 #display {
-  font: 2vw/1.4 CenturySchoolbook, serif;
+  font-family: CenturySchoolbook, serif;
+  line-height: 1.4;
   color: var(--text);
   font-variant-ligatures: no-common-ligatures;
   margin: 5vw 1vw;
@@ -110,13 +111,14 @@ span {
 
 .clmleft {
   float: left;
-  width: 25%;
+  text-align: left;
+  width: 30%;
 }
 
 .clmright {
   float: right;
   text-align: right;
-  width: 65%;
+  width: 70%;
 }
 
 .fade {

@@ -8,7 +8,11 @@ const config = {
   wordsShown: 11,
   // cosmetic
   // "rColumn": 33,
-  // fontSize: 2,
+  regSize: "2vw",
+  smallSize: "1.9vw",
+  smallestSize: "1.75vw",
+  smallParas: [3, 7, 17],
+  smallestParas: [4, 10, 11, 12, 14, 15],
   // lineHeight: lineHeight,
   // this is 9/16 of 1080:
   // heightVw: heightVw,

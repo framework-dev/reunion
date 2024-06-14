@@ -10,8 +10,8 @@ pager: false
 ```js
 import { config } from "/config.js";
 // --- DEBUG congiguration
-// config.startingPoint = 21; // DEBUG when RECORDING & REDUCTING EDIT here
-// config.numParas = 1; // DEBUG and here: number of scores built depends on this
+// config.startingPoint = 2; // DEBUG when RECORDING & REDUCTING EDIT here
+// config.numParas = 2; // DEBUG and here: number of scores built depends on this
 // config.running = false; // DEBUG
 import { mod, sleep, msToTime } from "/utils.js";
 var displayElem = document.getElementById("display");
@@ -129,13 +129,22 @@ async function play() {
   loopCount = 0;
   console.log("entered play()");
   await sleep(config.interCycle);
-  let prevScore;
+  let prevScore, cycStart;
   paraNum = config.startingPoint;
   while (config.running) { // stopped with false in config
-    let cycStart = Date.now();
+    if (paraNum == config.startingPoint) cycStart = Date.now();
     // loop forever ...
     loopMsg = `loop: ${loopCount++}`;
     // show current paragraph
+    if (config.smallestParas.includes(paraNum)) {
+      displayElem.style.fontSize = config.smallestSize;
+    }
+    else if (config.smallParas.includes(paraNum)) {
+      displayElem.style.fontSize = config.smallSize;
+    }
+    else {
+      displayElem.style.fontSize = config.regSize;
+    }
     displayElem.innerHTML = paras[paraNum].reduce((a, c) => a + " " + spels.get(c).normed, "");
     displayElem.style.opacity = 1;
     await sleep(300);

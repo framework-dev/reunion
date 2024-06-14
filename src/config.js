@@ -16,7 +16,7 @@ const config = {
   // viewPortPx: 956,
   // these times are all now hundredths of seconds
   creditsPause: 800,
-  interCycle: 200,
+  interCycle: 300,
   interScore: 200,
   scoredPause: 100,
   slower: 0

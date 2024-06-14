@@ -10,10 +10,10 @@ pager: false
 ```js
 import { config } from "/config.js";
 // --- DEBUG congiguration
-// config.startingPoint = 21; // DEBUG when RECORDING & REDUCTING EDIT here
-// config.numParas = 1; // DEBUG and here: number of scores built depends on this
+config.startingPoint = 21; // DEBUG when RECORDING & REDUCTING EDIT here
+config.numParas = 1; // DEBUG and here: number of scores built depends on this
 // config.running = false; // DEBUG
-import { mod, sleep } from "/utils.js";
+import { mod, sleep, msToTime } from "/utils.js";
 var displayElem = document.getElementById("display");
 var paraNum;
 var paras;
@@ -128,9 +128,11 @@ async function play() {
     toggle = true;
   loopCount = 0;
   console.log("entered play()");
+  await sleep(config.interCycle);
   let prevScore;
   paraNum = config.startingPoint;
   while (config.running) { // stopped with false in config
+    let cycStart = Date.now();
     // loop forever ...
     loopMsg = `loop: ${loopCount++}`;
     // show current paragraph
@@ -215,7 +217,7 @@ async function play() {
     // bump paraNum
     paraNum = ++paraNum;
     if (paraNum >= (config.numParas + config.startingPoint)) {
-      console.log("--- end of cycle ---"); // DEBUG
+      console.log("--- end of cycle --- Duration:", msToTime(Date.now() - cycStart)); // DEBUG
       paraNum = config.startingPoint;
       await sleep(config.interCycle); // end of cycle pause
       let bl = document.getElementById("byline");

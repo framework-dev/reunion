@@ -145,6 +145,5 @@ span {
 
 .visible {
   color: var(--context);
-  text-shadow: .01ch .01ch .015ch var(--bkgnd),
-    .02ch 0 1.5ch var(--em);
+  text-shadow: .6ch .2ch .7ch var(--em);
 }

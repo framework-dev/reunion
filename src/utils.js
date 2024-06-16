@@ -3,6 +3,7 @@ function mod(n, m) {
   return ((n % m) + m) % m;
 }
 function sleep(hundredths) {
+  if (hundredths < 0) hundredths = 0;
   return new Promise(resolve => setTimeout(resolve, hundredths * 10));
 }
 function msToTime(duration) {

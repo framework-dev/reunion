@@ -30,14 +30,6 @@ body {
   cursor: none;
 }
 
-span {
-  transition: color .7s ease-in-out;
-  -o-transition: color .7s ease-in-out;
-  -ms-transition: color .7s ease-in-out;
-  -moz-transition: color .7s ease-in-out;
-  -webkit-transition: color .7s ease-in-out;
-}
-
 #byline {
   font-size: 1.6vw;
   line-height: 1.1;
@@ -95,11 +87,16 @@ span {
   font-style: normal;
   /* font-weight: bold; */
   /* darkred is good for debugging with orange */
-  transition: color .7s ease-in-out;
-  -o-transition: color .7s ease-in-out;
-  -ms-transition: color .7s ease-in-out;
-  -moz-transition: color .7s ease-in-out;
-  -webkit-transition: color .7s ease-in-out;
+  transition: color .7s ease-in-out,
+    text-shadow .7s ease-in-out;
+  -o-transition: color .7s ease-in-out,
+    text-shadow .7s ease-in-out;
+  -ms-transition: color .7s ease-in-out,
+    text-shadow .7s ease-in-out;
+  -moz-transition: color .7s ease-in-out,
+    text-shadow .7s ease-in-out;
+  -webkit-transition: color .7s ease-in-out,
+    text-shadow .7s ease-in-out;
 }
 
 #display em.visible {
@@ -107,6 +104,19 @@ span {
   /* font-weight: bold; */
   color: var(--em);
   /* darkred is good for debugging with orange */
+}
+
+span {
+  transition: color .7s ease-in-out,
+    text-shadow .7s ease-in-out;
+  -o-transition: color .7s ease-in-out,
+    text-shadow .7s ease-in-out;
+  -ms-transition: color .7s ease-in-out,
+    text-shadow .7s ease-in-out;
+  -moz-transition: color .7s ease-in-out,
+    text-shadow .7s ease-in-out;
+  -webkit-transition: color .7s ease-in-out,
+    text-shadow .7s ease-in-out;
 }
 
 .clmleft {
@@ -135,4 +145,6 @@ span {
 
 .visible {
   color: var(--context);
+  text-shadow: .01ch .01ch .015ch var(--bkgnd),
+    .02ch 0 1.5ch var(--em);
 }

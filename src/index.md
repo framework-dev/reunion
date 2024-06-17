@@ -8,6 +8,7 @@ sidebar: false
 pager: false
 ---
 ```js
+console.log("--- Crawl It’s Image v1.0 for ELO 2024/07 ---");
 import { config } from "/config.js";
 // --- DEBUG congiguration
 // config.startingPoint = 2; // DEBUG when RECORDING & REDUCTING EDIT here

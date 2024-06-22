@@ -7,6 +7,22 @@ footer: false
 sidebar: false
 pager: false
 ---
+<!-- Version 1.0 for ELO 2024 -->
+<div id="byline">
+  <div class="clmleft">
+    <span id="bytext"><cite>Crawl It’s Image</cite>&nbsp;&nbsp;•&nbsp;&nbsp;<a href="https://programmatology.com/?p=contents/bio.html">John Cayley</a></span>
+  </div>
+  <div class="clmright">
+    <span style="font-size: 1.2vw;">
+      <cite>static version:</cite> &nbsp;
+      <a href="https://programmatology.com/imagegen/webapps/limage_in_hii.html">“l’Image” in <cite>How It Is</cite></a>&nbsp;&nbsp;•&nbsp;&nbsp;<cite>live-code notebooks:</cite> &nbsp;
+      <a href="https://observablehq.com/@shadoof/hospitable-narratives-1">Workbook for static version</a><br>
+      <cite>&amp;</cite>&nbsp;&nbsp;<a href="https://observablehq.com/@shadoof/commenttis/">Letteral grams finder</a>&nbsp;&nbsp;•&nbsp;&nbsp;<cite>made with:</cite> <a href="https://observablehq.com/framework/">Observable Framework</a>&nbsp;&nbsp;•&nbsp;&nbsp;June 2024
+    </span>
+  </div>
+</div>
+<div id="display" class="fade"></div>
+
 ```js
 console.log("--- Crawl It’s Image v1.0 for ELO 2024/07 ---");
 import { config } from "/config.js";
@@ -28,7 +44,6 @@ paras = await preProc(supplyParas);
 scores = await linearScrs(tstamps, config.startingPoint, config.numParas);
 console.log(paras[config.startingPoint]); // DEBUG , paras, scores
 console.log("--- preprocessing done ---"); // DEBUG
-// NEW
 displayElem.addEventListener("mouseenter", () => {displayElem.innerHTML = paras[paraNum].reduce((a, c) => a + " " + spels.get(c).html, ""); toggleEmViz(displayElem);});
 displayElem.addEventListener("mouseleave", () => displayElem.innerHTML = paras[paraNum].reduce((a, c) => a + " " + spels.get(c).normed, ""));
 // --- preprocessing functions ---
@@ -247,18 +262,3 @@ function accentedEm(spelId, emElem) {
 }
 if (config.running) play();
 ```
-<!-- Version 1.0 for ELO 2024 -->
-<div id="byline">
-  <div class="clmleft">
-    <span id="bytext"><cite>Crawl It’s Image</cite>&nbsp;&nbsp;•&nbsp;&nbsp;<a href="https://programmatology.com/?p=contents/bio.html">John Cayley</a></span>
-  </div>
-  <div class="clmright">
-    <span style="font-size: 1.2vw;">
-      <cite>static version:</cite> &nbsp;
-      <a href="https://programmatology.com/imagegen/webapps/limage_in_hii.html">“l’Image” in <cite>How It Is</cite></a>&nbsp;&nbsp;•&nbsp;&nbsp;<cite>live-code notebooks:</cite> &nbsp;
-      <a href="https://observablehq.com/@shadoof/hospitable-narratives-1">Workbook for static version</a><br>
-      <cite>&amp;</cite>&nbsp;&nbsp;<a href="https://observablehq.com/@shadoof/commenttis/">Letteral grams finder</a>&nbsp;&nbsp;•&nbsp;&nbsp;<cite>made with:</cite> <a href="https://observablehq.com/framework/">Observable Framework</a>&nbsp;&nbsp;•&nbsp;&nbsp;June 2024
-    </span>
-  </div>
-</div>
-<div id="display" class="fade"></div>

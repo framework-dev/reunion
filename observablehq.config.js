@@ -1,7 +1,7 @@
 // See https://observablehq.com/framework/config for documentation.
 export default {
   // The project’s title; used in the sidebar and webpage titles.
-  title: "Reunion",
+  title: "Crawl It’s Image",
 
   // The pages and sections in the sidebar. If you don’t specify this option,
   // all pages will be listed in alphabetical order. Listing pages explicitly
@@ -17,7 +17,7 @@ export default {
   // ],
 
   // Content to add to the head of the page, e.g. for a favicon:
-  head: '<link rel="icon" href="observable.png" type="image/png" sizes="32x32">',
+  head: '<link rel="icon" href="favicon" type="image/x-icon" sizes="32x32">',
 
   // The path to the source root.
   root: "src",
@@ -28,8 +28,8 @@ export default {
   // footer: "Built with Observable.", // what to show in the footer (HTML)
   // sidebar: true, // whether to show the sidebar
   // toc: true, // whether to show the table of contents
-  // pager: true, // whether to show previous & next links in the footer
-  // output: "dist", // path to the output root for build
+  pager: false, // whether to show previous & next links in the footer
+  // output: "../../shadoof.github.io/crawlitsimage", // path to the output root for build
   // search: true, // activate search
   // linkify: true, // convert URLs in Markdown to links
   // typographer: false, // smart quotes and other typographic improvements

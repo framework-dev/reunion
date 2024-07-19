@@ -1,0 +1,156 @@
+@font-face {
+  font-family: 'CenturySchoolbook';
+  src: local('Century Schoolbook'),
+    url('/data/CenturySchoolbook.woff2') format('woff2'),
+    url('/data/CenturySchoolbook.woff') format('woff'),
+    url('/data/CenturySchoolbook.ttf') format('ttf')
+}
+
+:root {
+  /* dark on light */
+  /* --bkgnd: #fffff5; */
+  /* --context: #39CCEE; */
+  /* --em: black; */
+  --text: #AAAAAA;
+  /* -------------- */
+  /* light on dark */
+  --em: white;
+  --context: #af5c13;
+  --bkgnd: black;
+  /* possible clrs.cc blues #0074D9 lighter #7FDBFF teal #39CCCC */
+}
+
+html {
+  background-color: var(--bkgnd);
+}
+
+#observablehq-main {
+  margin-top: 0;
+}
+
+body {
+  margin-top: 0;
+  color: var(--text);
+  background-color: var(--bkgnd);
+  cursor: none;
+}
+
+#byline {
+  font-size: 1.6vw;
+  line-height: 1.1;
+  margin: none;
+  padding-top: 2vw;
+  padding-bottom: .5vw;
+  text-align: center;
+  z-index: 10;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .7s ease-in-out;
+  -o-transition: opacity .7s ease-in-out;
+  -ms-transition: opacity .7s ease-in-out;
+  -moz-transition: opacity .7s ease-in-out;
+  -webkit-transition: opacity .7s ease-in-out;
+}
+
+#byline:hover {
+  opacity: 1;
+}
+
+#byline a {
+  color: var(--text);
+  text-decoration: none;
+  overflow: hidden;
+}
+
+#byline a:hover {
+  color: lightgray;
+}
+
+/* Clear floats after the columns */
+#byline:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+#display {
+  font-family: CenturySchoolbook, serif;
+  line-height: 1.4;
+  color: var(--text);
+  font-variant-ligatures: no-common-ligatures;
+  margin: 5vw 1vw;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  opacity: 0;
+  transition: opacity 2.5s ease-in-out;
+  -o-transition: opacity 2.5s ease-in-out;
+  -ms-transition: opacity 2.5s ease-in-out;
+  -moz-transition: opacity 2.5s ease-in-out;
+  -webkit-transition: opacity 2.5s ease-in-out;
+}
+
+#display em {
+  font-style: normal;
+  /* font-weight: bold; */
+  /* darkred is good for debugging with orange */
+  transition: color .7s ease-in-out,
+    text-shadow .7s ease-in-out;
+  -o-transition: color .7s ease-in-out,
+    text-shadow .7s ease-in-out;
+  -ms-transition: color .7s ease-in-out,
+    text-shadow .7s ease-in-out;
+  -moz-transition: color .7s ease-in-out,
+    text-shadow .7s ease-in-out;
+  -webkit-transition: color .7s ease-in-out,
+    text-shadow .7s ease-in-out;
+}
+
+#display em.visible {
+  font-style: normal;
+  /* font-weight: bold; */
+  color: var(--em);
+  /* darkred is good for debugging with orange */
+}
+
+span {
+  transition: color .7s ease-in-out,
+    text-shadow .7s ease-in-out;
+  -o-transition: color .7s ease-in-out,
+    text-shadow .7s ease-in-out;
+  -ms-transition: color .7s ease-in-out,
+    text-shadow .7s ease-in-out;
+  -moz-transition: color .7s ease-in-out,
+    text-shadow .7s ease-in-out;
+  -webkit-transition: color .7s ease-in-out,
+    text-shadow .7s ease-in-out;
+}
+
+.clmleft {
+  float: left;
+  text-align: left;
+  width: 30%;
+}
+
+.clmright {
+  float: right;
+  text-align: right;
+  width: 70%;
+}
+
+.fade {
+  cursor: pointer;
+}
+
+.fade:hover {
+  color: var(--context);
+}
+
+.none {
+  display: none;
+}
+
+.visible {
+  color: var(--context);
+  text-shadow: .6ch .2ch .7ch var(--em);
+}

@@ -1,5 +1,5 @@
 ---
-title: l’Image
+title: Reunion
 toc: false
 head: "<link rel='stylesheet' href='style.css' type='text/css' media='all' />"
 header: false
@@ -7,24 +7,19 @@ footer: false
 sidebar: false
 pager: false
 ---
-<!-- Version 1.0 for ELO 2024 -->
+<!-- July 2024 -->
 <div id="byline">
   <div class="clmleft">
-    <span id="bytext"><cite>Crawl It’s Image</cite>&nbsp;&nbsp;•&nbsp;&nbsp;<a href="https://programmatology.com/?p=contents/bio.html">John Cayley</a></span>
+    <span id="bytext"><cite>Steep 2024 • 1974 &nbsp;&nbsp;&nbsp; Reunion</cite></span>
   </div>
   <div class="clmright">
-    <span style="font-size: 1.2vw;">
-      <cite>static version:</cite> &nbsp;
-      <a href="https://programmatology.com/imagegen/webapps/limage_in_hii.html">“l’Image” in <cite>How It Is</cite></a>&nbsp;&nbsp;•&nbsp;&nbsp;<cite>live-code notebooks:</cite> &nbsp;
-      <a href="https://observablehq.com/@shadoof/hospitable-narratives-1">Workbook for static version</a><br>
-      <cite>&amp;</cite>&nbsp;&nbsp;<a href="https://observablehq.com/@shadoof/commenttis/">Letteral grams finder</a>&nbsp;&nbsp;•&nbsp;&nbsp;<cite>made with:</cite> <a href="https://observablehq.com/framework/">Observable Framework</a>&nbsp;&nbsp;•&nbsp;&nbsp;June 2024
-    </span>
+    <span style="font-size: 1.2vw;">John Cayley</span>
   </div>
 </div>
 <div id="display" class="fade"></div>
 
 ```js
-console.log("--- Crawl It’s Image v1.0 for ELO 2024/07 ---");
+console.log("--- Reunion July 2024 ---");
 import { config } from "/config.js";
 // --- DEBUG congiguration
 // config.startingPoint = 2; // DEBUG when RECORDING & REDUCTING EDIT here
@@ -35,53 +30,18 @@ var displayElem = document.getElementById("display");
 var paraNum;
 var paras;
 var scores;
-var spels = new Map();
-const supplyParas = await FileAttachment("/data/supplyHTML.json").json();
-const tstamps = await FileAttachment("/data/limageinhii.json").json();
+var spels = new Map(await FileAttachment("/data/spels.json").json());
+displayElem.innerHTML = await FileAttachment("/data/spanString.txt").text();
+// const tstamps = await FileAttachment("/data/limageinhii.json").json();
 // --- preprocessing ---
 console.log("--- preprocessing begins ---"); // DEBUG
-paras = await preProc(supplyParas);
-scores = await linearScrs(tstamps, config.startingPoint, config.numParas);
-console.log(paras[config.startingPoint]); // DEBUG , paras, scores
+// paras = await preProc(supplyParas);
+scores = await FileAttachment("/data/scores.json").json(); // TODO default only
+// console.log(paras[config.startingPoint]); // DEBUG , paras, scores
 console.log("--- preprocessing done ---"); // DEBUG
-displayElem.addEventListener("mouseenter", () => {displayElem.innerHTML = paras[paraNum].reduce((a, c) => a + " " + spels.get(c).html, ""); toggleEmViz(displayElem);});
-displayElem.addEventListener("mouseleave", () => displayElem.innerHTML = paras[paraNum].reduce((a, c) => a + " " + spels.get(c).normed, ""));
+// displayElem.addEventListener("mouseenter", () => {displayElem.innerHTML = paras[paraNum].reduce((a, c) => a + " " + spels.get(c).html, ""); toggleEmViz(displayElem);});
+// displayElem.addEventListener("mouseleave", () => displayElem.innerHTML = paras[paraNum].reduce((a, c) => a + " " + spels.get(c).normed, ""));
 // --- preprocessing functions ---
-function addSpans(supplyHTML, spelNdx) {
-  let paraSpels = [];
-  let spelStart = supplyHTML.search(/\S/); // find the first nonwhitespace
-  let currentHTML = "";
-  while (spelStart != -1) {
-    currentHTML += supplyHTML.substr(0, spelStart); // grab everything up to that point
-    supplyHTML = supplyHTML.substr(spelStart); // put the rest in supplyHTML
-    let spelEnd = supplyHTML.search(/\s/); // find where whitespace starts again
-    if (spelEnd == -1) spelEnd = supplyHTML.length; // supplyHTML ends with nonwhitespace
-    // process the spel and put it into the map
-    currentHTML = supplyHTML.substr(0, spelEnd);
-    let spelStr = currentHTML.replace(/(<([^>]+)>)/ig, '').trim();
-    let spelId = spelStr.normalize("NFD").replace(/[\u0300-\u036f]/g, "") + `_${spelNdx++}`;
-    // wrap the spel we've found in span tags
-    let spelHTML = `<span id="${spelId}">${currentHTML}</span>`
-    spels.set(spelId, {string: spelStr, html: spelHTML, normed: spelHTML.normalize("NFD").replace(/[\u0300-\u036f]/g, "")});
-    paraSpels.push(spelId); // add ids to paraSpels
-    supplyHTML = supplyHTML.substr(spelEnd); // put the rest in supplyHTML
-    spelStart = supplyHTML.search(/\S/); // find the next nonwhitespace (if any)
-  }
-  // console.log(paraSpels); // DEBUG
-  return paraSpels;
-}
-async function preProc(_supplyParas) {
-  // console.log("preProc"); // DEBUG
-  let spelNdx = 0;
-  let _paras = [];
-  for (var i = 0; i < _supplyParas.length; i++) {
-    let paraSpels = await addSpans(_supplyParas[i], spelNdx);
-    // console.log(spelNdx, paraSpels.length); // DEBUG
-    spelNdx += paraSpels.length;
-    _paras.push(paraSpels);
-  }
-  return _paras;
-}
 function toggleEmViz(elem) {
   let spans = Array.from(elem.getElementsByTagName("span"));
   let ems = []
@@ -152,16 +112,6 @@ async function play() {
     // loop forever ...
     loopMsg = `loop: ${loopCount++}`;
     // show current paragraph
-    if (config.smallestParas.includes(paraNum)) {
-      displayElem.style.fontSize = config.smallestSize;
-    }
-    else if (config.smallParas.includes(paraNum)) {
-      displayElem.style.fontSize = config.smallSize;
-    }
-    else {
-      displayElem.style.fontSize = config.regSize;
-    }
-    displayElem.innerHTML = paras[paraNum].reduce((a, c) => a + " " + spels.get(c).normed, "");
     displayElem.style.opacity = 1;
     await sleep(300);
     //
@@ -212,24 +162,13 @@ async function play() {
       // these next lines do all the work:
       // unless there is a scored pause: trigger fade in/out:
       if (spelId !== "PAUSE") {
-//        let accentedEm = "";
         let elem = document.getElementById(spelId);
         elem.classList.add("visible");
-        let emElems = elem.getElementsByTagName("em");
-        let emElem, newInner = "";
-        if (emElems && emElems.length == 1) {
-          emElem = emElems.item(0);
-          newInner = accentedEm(spelId, emElem);
-          if (newInner != "") emElem.innerText = newInner;
-          emElem.classList.add("visible");
-        }
         if (autopause > 0) {
           let ridx = mod(idx - numWords, score.length);
           autopause += score[idx].pause - score[ridx].pause;
           sleep(autopause).then(() => {
             elem.classList.remove("visible");
-            if (emElem) emElem.classList.remove("visible");
-           if (newInner != "") sleep(200).then(() => elem.innerHTML = spels.get(spelId).normed);
           });
         }
       }
@@ -254,11 +193,6 @@ async function play() {
     // bump scoreNum
     scoreNum = ++scoreNum % scores.length;
   } // end of (endless) while loop
-}
-function accentedEm(spelId, emElem) {
-  let inner = emElem.innnerText;
-  let accented = spels.get(spelId).html.match(/<em>(.*)<\/em>/)[1];
-  return inner == accented ? "" : accented;
 }
 if (config.running) play();
 ```

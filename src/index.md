@@ -84,7 +84,7 @@ function linearScrs(_tstamps, startingPara, numParas) {
     // adding autofade here
     a.unshift({
       id: "AUTOFADE",
-      pause: config.wordsShown
+      pause: config.fadeWords
     });
     scores.push(a);
   }
@@ -93,20 +93,22 @@ function linearScrs(_tstamps, startingPara, numParas) {
 //
 // --- animation, based on the play() method in observablehq.com/@shadoof/sounding ---
 async function play() {
-  let idx,
-    loopCount,
+  console.log("entered play()");
+  let cycStart,
+    fadePause = 0,
+    fadeWords = config.fadeWords,
+    idx,
+    loopCount = 0,
     loopMsg,
+    paraNum = config.startingPoint,
+    prevScore,
     rdnScore,
     score,
-    scoreNum = 0,
-    yieldMsg,
     scoreName,
-    toggle = true;
-  loopCount = 0;
-  console.log("entered play()");
+    scoreNum = 0,
+    toggle = true,
+    yieldMsg;
   await sleep(config.interCycle);
-  let prevScore, cycStart;
-  paraNum = config.startingPoint;
   while (config.running) { // stopped with false in config
     if (paraNum == config.startingPoint) cycStart = Date.now();
     // loop forever ...
@@ -133,48 +135,57 @@ async function play() {
     //
     // This is where we inner-loop through each item in the current score and
     // display the string of its spel for the length of time in its pause property.
-    let autopause = -1,
-      numWords = 1;
     for (idx = 0; idx < score.length; idx++) {
       if (!config.running) break;
       let spelId = score[idx].id;
-      if (spelId === "AUTOFADE") {
+      // an 'AUTOFADE' score item can override the config.fadeWords default
+      if (spelId === "AUTOFADE") { 
         console.log("autoFade");
         // calculate autofade based on word number
-        autopause = 0;
-        let numWords = score[idx].pause;
-        for (let fi = 0; fi <= numWords; ++fi) {
-          autopause += score[fi].pause;
+        fadePause = 0;
+        fadeWords = score[idx].pause;
+        for (let fi = 0; fi < fadeWords; ++fi) {
+          let fidx = (idx + fi + 1) % score.length;
+          fadePause += score[fidx].pause;
         }
         continue;
       }
+      // >>> provide some info:
       let str = "[pause]";
       if (spelId !== "PAUSE") {
         str = spels.get(spelId);
         if (str !== undefined) str = str.string;
       }
-      // provide some info:
       yieldMsg =
         loopMsg + `, score: ${scoreNum}, item: ${idx}, paraNum: ${paraNum}, id: ${spelId}, `;
       yieldMsg += `string: '${str}', pause: ${score[idx].pause}`;
-      console.log(yieldMsg); // (in other contexts:) yield yieldMsg;
+      console.log(yieldMsg); // <<< (in other contexts:) yield yieldMsg;
       //
-      // these next lines do all the work:
-      // unless there is a scored pause: trigger fade in/out:
+      // >>> these next lines do all the work
+      let elem;
       if (spelId !== "PAUSE") {
-        let elem = document.getElementById(spelId);
+        elem = document.getElementById(spelId);
         elem.classList.add("visible");
-        if (autopause > 0) {
-          let ridx = mod(idx - numWords, score.length);
-          autopause += score[idx].pause - score[ridx].pause;
-          sleep(autopause).then(() => {
-            elem.classList.remove("visible");
-          });
-        }
       }
       await sleep(score[idx].pause); // pauses usually taken from the temporal data
+      if (spelId === "PAUSE") continue;
+      // not a pause item, so check for fadeWords
+      if (fadeWords > 0) {
+        fadePause = 0;
+        for (let fi = 0; fi < fadeWords; ++fi) {
+          let fidx = (fi + idx + 1) % score.length;
+          fadePause += score[fidx].pause;
+        }
+      }
+      if (fadePause > 0) {
+        // let ridx = mod(idx - fadeWords, score.length);
+        // fadePause += score[idx].pause - score[ridx].pause;
+        sleep(fadePause).then(() => {
+          elem.classList.remove("visible");
+        });
+      }
     } // end of loop thru current score
-    await sleep(autopause + config.interScore); // pause between scores
+    await sleep(fadePause + config.interScore); // pause between scores
     // remove old paragraph:
     displayElem.style.opacity = 0;
     await sleep(300);

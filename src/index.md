@@ -7,7 +7,7 @@ footer: false
 sidebar: false
 pager: false
 ---
-<!-- July 2024 -->
+<!-- version 1.1 July 2024 -->
 <div id="byline">
   <div class="clmleft">
     <span id="bytext"><cite>Steep 2024 • 1974 &nbsp;&nbsp;&nbsp; Reunion</cite></span>

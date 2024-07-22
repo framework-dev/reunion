@@ -84,7 +84,6 @@ body {
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  opacity: 1;
   transition: opacity 2.5s ease-in-out;
   -o-transition: opacity 2.5s ease-in-out;
   -ms-transition: opacity 2.5s ease-in-out;

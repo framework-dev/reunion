@@ -115,8 +115,10 @@ async function play() {
     // loop forever ...
     loopMsg = `loop: ${loopCount++}`;
     // >>> show current paragraph
-    // displayElem.style.opacity = 1;
-    // await sleep(300);
+    if (config.fadeWords == 0 ) {
+      displayElem.style.opacity = 1;
+      await sleep(300);
+    }
     // <<<
     // (currently) unused mechanism for generating quasi-random scores on the fly (see 'Uchaf'):
     if (typeof scores[scoreNum] === "string") {
@@ -188,8 +190,10 @@ async function play() {
     } // end of loop thru current score
     await sleep(fadePause + config.interScore); // pause between scores
     // >>> remove old paragraph:
-    // displayElem.style.opacity = 0;
-    // await sleep(300);
+    if (config.fadeWords == 0) {
+      displayElem.style.opacity = 0;
+      await sleep(300);
+    }
     // <<<
     // bump paraNum
     paraNum = ++paraNum;

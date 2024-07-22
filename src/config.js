@@ -3,7 +3,7 @@ const lineHeight = 2.8;
 const linesPer = Math.floor(heightVw / lineHeight);
 const config = {
   startingPoint: 0,
-  numParas: 22,
+  numParas: 3,
   running: true,
   fadeWords: 11,
   // cosmetic
@@ -14,7 +14,7 @@ const config = {
   // linesPer: linesPer,
   // viewPortPx: 956,
   // these times are all now hundredths of seconds
-  creditsPause: 800,
+  creditsPause: 500,
   interCycle: 300,
   interScore: 200,
   scoredPause: 100,

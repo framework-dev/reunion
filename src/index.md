@@ -113,10 +113,10 @@ async function play() {
     if (paraNum == config.startingPoint) cycStart = Date.now();
     // loop forever ...
     loopMsg = `loop: ${loopCount++}`;
-    // show current paragraph
-    displayElem.style.opacity = 1;
-    await sleep(300);
-    //
+    // >>> show current paragraph
+    // displayElem.style.opacity = 1;
+    // await sleep(300);
+    // <<<
     // (currently) unused mechanism for generating quasi-random scores on the fly (see 'Uchaf'):
     if (typeof scores[scoreNum] === "string") {
       switch (scores[scoreNum]) {
@@ -173,7 +173,7 @@ async function play() {
       if (fadeWords > 0) {
         fadePause = 0;
         for (let fi = 0; fi < fadeWords; ++fi) {
-          let fidx = (fi + idx + 1) % score.length;
+          let fidx = mod((fi + idx + 1), score.length);
           fadePause += score[fidx].pause;
         }
       }
@@ -186,9 +186,10 @@ async function play() {
       }
     } // end of loop thru current score
     await sleep(fadePause + config.interScore); // pause between scores
-    // remove old paragraph:
-    displayElem.style.opacity = 0;
-    await sleep(300);
+    // >>> remove old paragraph:
+    // displayElem.style.opacity = 0;
+    // await sleep(300);
+    // <<<
     // bump paraNum
     paraNum = ++paraNum;
     if (paraNum >= (config.numParas + config.startingPoint)) {
@@ -197,7 +198,7 @@ async function play() {
       await sleep(config.interCycle); // end of cycle pause
       let bl = document.getElementById("byline");
       bl.style.opacity = 1;
-      await sleep(config.creditsPause); // credits pause 7s
+      await sleep(config.creditsPause); // credits pause
       bl.style.opacity = 0;
       await sleep(config.interCycle); // end of cycle pause
     }

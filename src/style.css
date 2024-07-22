@@ -1,9 +1,8 @@
 @font-face {
-  font-family: 'CenturySchoolbook';
-  src: local('Century Schoolbook'),
-    url('/data/CenturySchoolbook.woff2') format('woff2'),
-    url('/data/CenturySchoolbook.woff') format('woff'),
-    url('/data/CenturySchoolbook.ttf') format('ttf')
+  font-family: 'Source Serif 4';
+  src: local('Source Serif 4'),
+    url('/data/SourceSerif4-VariableFont.woff2') format('woff2'),
+    url('/data/SourceSerif4-VariableFont.ttf') format('ttf')
 }
 
 :root {
@@ -11,12 +10,13 @@
   /* --bkgnd: #fffff5; */
   /* --context: #39CCEE; */
   /* --em: black; */
-  --text: #AAAAAA;
+  /* --text: #AAAAAA; */
+  --text: floralwhite;
   /* -------------- */
   /* light on dark */
   --em: white;
   --context: #af5c13;
-  --bkgnd: black;
+  --bkgnd: #00182f;
   /* possible clrs.cc blues #0074D9 lighter #7FDBFF teal #39CCCC */
 }
 
@@ -75,15 +75,16 @@ body {
 
 #display {
   position: relative;
-  font-family: CenturySchoolbook, serif;
-  line-height: 1.4;
+  font-family: 'Source Serif 4', serif;
+  font-size: 2.5vw;
+  line-height: 1.8;
   color: var(--text);
   font-variant-ligatures: no-common-ligatures;
-  margin: 5vw 1vw;
+  margin: 5vw 25vw;
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  opacity: 0;
+  opacity: 1;
   transition: opacity 2.5s ease-in-out;
   -o-transition: opacity 2.5s ease-in-out;
   -ms-transition: opacity 2.5s ease-in-out;
@@ -152,25 +153,20 @@ span {
 }
 
 .visible {
-  color: var(--context);
+  color: var(--text);
   /* text-shadow: .6ch .2ch .7ch var(--em); */
 }
 
-.text {
+.spel {
   position: absolute;
   opacity: 0;
   transition: all 1.5s ease-in-out;
-  /* vendorless fallback */
   -o-transition: all 1.5s ease-in-out;
-  /* opera */
   -ms-transition: all 1.5s ease-in-out;
-  /* IE 10 */
   -moz-transition: all 1.5s ease-in-out;
-  /* Firefox */
   -webkit-transition: all 1.5s ease-in-out;
-  /*safari and chrome */
 }
 
-.text.visible {
+.spel.visible {
   opacity: 1;
 }

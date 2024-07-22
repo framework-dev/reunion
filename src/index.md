@@ -32,11 +32,12 @@ var paras;
 var scores;
 var spels = new Map(await FileAttachment("/data/spels.json").json());
 displayElem.innerHTML = await FileAttachment("/data/spanString.txt").text();
-// const tstamps = await FileAttachment("/data/limageinhii.json").json();
+const tstamps = await FileAttachment("/data/reunion_tstamps.json").json();
 // --- preprocessing ---
 console.log("--- preprocessing begins ---"); // DEBUG
-// paras = await preProc(supplyParas);
-scores = await FileAttachment("/data/scores.json").json(); // TODO default only
+paras = await FileAttachment("/data/paras.json").json();
+scores = await linearScrs(tstamps, config.startingPoint, config.numParas);
+// scores = await FileAttachment("/data/scores.json").json(); // TODO default algorithmic tstamps only
 // console.log(paras[config.startingPoint]); // DEBUG , paras, scores
 console.log("--- preprocessing done ---"); // DEBUG
 // displayElem.addEventListener("mouseenter", () => {displayElem.innerHTML = paras[paraNum].reduce((a, c) => a + " " + spels.get(c).html, ""); toggleEmViz(displayElem);});

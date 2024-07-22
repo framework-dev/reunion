@@ -1,0 +1,308 @@
+[
+  [
+    {
+      "start": 1.04,
+      "end": 1.85,
+      "word": "Cobbett’s "
+    },
+    {
+      "start": 1.85,
+      "end": 2.3200000000000003,
+      "word": "View "
+    },
+    {
+      "start": 3.31,
+      "end": 3.9,
+      "word": "broad "
+    },
+    {
+      "start": 4,
+      "end": 4.68,
+      "word": "vista "
+    },
+    {
+      "start": 4.82,
+      "end": 5.41,
+      "word": "north "
+    },
+    {
+      "start": 7.01,
+      "end": 7.4799999999999995,
+      "word": "Thomas’ "
+    },
+    {
+      "start": 7.71,
+      "end": 8.65,
+      "word": "Stone "
+    },
+    {
+      "start": 9.58,
+      "end": 10.14,
+      "word": "high "
+    },
+    {
+      "start": 10.179999,
+      "end": 10.939999,
+      "word": "downs "
+    },
+    {
+      "start": 11.03,
+      "end": 11.739999999999998,
+      "word": "south "
+    },
+    {
+      "start": 13.7,
+      "end": 14.379999999999999,
+      "word": "fifty "
+    },
+    {
+      "start": 14.38,
+      "end": 15.23,
+      "word": "years "
+    },
+    {
+      "start": 16.119999,
+      "end": 16.479999,
+      "word": "all "
+    },
+    {
+      "start": 16.529999,
+      "end": 16.829999,
+      "word": "that "
+    },
+    {
+      "start": 16.889999,
+      "end": 17.709999,
+      "word": "change "
+    },
+    {
+      "start": 19,
+      "end": 19.38,
+      "word": "no "
+    },
+    {
+      "start": 19.43,
+      "end": 19.83,
+      "word": "time "
+    },
+    {
+      "start": 21.119999999999997,
+      "end": 21.419999999999998,
+      "word": "not "
+    },
+    {
+      "start": 21.549999999999997,
+      "end": 21.909999999999997,
+      "word": "this "
+    },
+    {
+      "start": 21.939999999999998,
+      "end": 22.38,
+      "word": "way "
+    }
+  ],
+  [
+    {
+      "start": 1.3,
+      "end": 1.6600000000000001,
+      "word": "head "
+    },
+    {
+      "start": 1.68,
+      "end": 2.41,
+      "word": "winds "
+    },
+    {
+      "start": 3.23,
+      "end": 3.66,
+      "word": "kept "
+    },
+    {
+      "start": 3.66,
+      "end": 4.03,
+      "word": "you "
+    },
+    {
+      "start": 4.04,
+      "end": 4.63,
+      "word": "home "
+    },
+    {
+      "start": 6.32,
+      "end": 6.680000000000001,
+      "word": "lee "
+    },
+    {
+      "start": 6.680000000000001,
+      "end": 7.1899999999999995,
+      "word": "way "
+    },
+    {
+      "start": 8.2,
+      "end": 8.67,
+      "word": "brings "
+    },
+    {
+      "start": 8.72,
+      "end": 9.22,
+      "word": "us "
+    },
+    {
+      "start": 9.28,
+      "end": 9.82,
+      "word": "here "
+    },
+    {
+      "start": 11.5,
+      "end": 11.93,
+      "word": "old "
+    },
+    {
+      "start": 11.93,
+      "end": 12.819999000000001,
+      "word": "school "
+    },
+    {
+      "start": 13.45,
+      "end": 13.84,
+      "word": "where "
+    },
+    {
+      "start": 13.84,
+      "end": 14.08,
+      "word": "we "
+    },
+    {
+      "start": 14.08,
+      "end": 14.74,
+      "word": "lived "
+    },
+    {
+      "start": 15.759999,
+      "end": 16.049999,
+      "word": "new "
+    },
+    {
+      "start": 16.059999,
+      "end": 16.849999,
+      "word": "lives "
+    },
+    {
+      "start": 17.5,
+      "end": 18.12,
+      "word": "now "
+    },
+    {
+      "start": 18.379999,
+      "end": 18.709999,
+      "word": "we "
+    },
+    {
+      "start": 18.709999,
+      "end": 19.169999,
+      "word": "learn "
+    }
+  ],
+  [
+    {
+      "start": 1.18,
+      "end": 1.5999999999999999,
+      "word": "hard "
+    },
+    {
+      "start": 1.62,
+      "end": 2.22,
+      "word": "work "
+    },
+    {
+      "start": 3.17,
+      "end": 3.5,
+      "word": "can "
+    },
+    {
+      "start": 3.51,
+      "end": 3.7699999999999996,
+      "word": "not "
+    },
+    {
+      "start": 3.86,
+      "end": 4.54,
+      "word": "last "
+    },
+    {
+      "start": 5.86,
+      "end": 6.45,
+      "word": "gentle "
+    },
+    {
+      "start": 6.5,
+      "end": 7.32,
+      "word": "passions "
+    },
+    {
+      "start": 8.03,
+      "end": 8.57,
+      "word": "all "
+    },
+    {
+      "start": 8.63,
+      "end": 8.97,
+      "word": "that’s "
+    },
+    {
+      "start": 9,
+      "end": 9.58,
+      "word": "left "
+    },
+    {
+      "start": 11.05,
+      "end": 11.74,
+      "word": "once "
+    },
+    {
+      "start": 12.19,
+      "end": 12.479999999999999,
+      "word": "we "
+    },
+    {
+      "start": 12.48,
+      "end": 13.06,
+      "word": "sang "
+    },
+    {
+      "start": 13.07,
+      "end": 13.46,
+      "word": "near "
+    },
+    {
+      "start": 13.46,
+      "end": 14.110000000000001,
+      "word": "here "
+    },
+    {
+      "start": 14.74,
+      "end": 15.02,
+      "word": "and "
+    },
+    {
+      "start": 15.02,
+      "end": 15.6,
+      "word": "now "
+    },
+    {
+      "start": 15.929999,
+      "end": 16.169999,
+      "word": "we "
+    },
+    {
+      "start": 16.17,
+      "end": 16.830000000000002,
+      "word": "dance "
+    },
+    {
+      "start": 17.07,
+      "end": 17.57,
+      "word": "again "
+    }
+  ]
+]

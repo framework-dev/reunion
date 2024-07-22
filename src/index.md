@@ -13,7 +13,7 @@ pager: false
     <span id="bytext"><cite>Steep 2024 • 1974 &nbsp;&nbsp;&nbsp; Reunion</cite></span>
   </div>
   <div class="clmright">
-    <span style="font-size: 1.2vw;">John Cayley</span>
+    <span style="font-size: 1.2vw;">John C.</span>
   </div>
 </div>
 <div id="display" class="fade"></div>
@@ -192,7 +192,7 @@ async function play() {
     // >>> remove old paragraph:
     if (config.fadeWords == 0) {
       displayElem.style.opacity = 0;
-      await sleep(300);
+      await sleep(275);
       paras[paraNum].forEach(p => document.getElementById(p).classList.remove("visible"));
       await sleep(50);
     }

@@ -19,7 +19,7 @@ pager: false
 <div id="display" class="fade"></div>
 
 ```js
-console.log("--- Reunion July 2024 ---");
+console.log("--- Reunion July 2024 v1.1 ---");
 import { config } from "/config.js";
 // --- DEBUG congiguration
 // config.startingPoint = 2; // DEBUG when RECORDING & REDUCTING EDIT here

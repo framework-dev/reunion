@@ -5,7 +5,7 @@ const config = {
   startingPoint: 0,
   numParas: 3,
   running: true,
-  fadeWords: 11,
+  fadeWords: 0, // zero for no autoFade
   // cosmetic
   // "rColumn": 33,
   // lineHeight: lineHeight,
@@ -14,9 +14,9 @@ const config = {
   // linesPer: linesPer,
   // viewPortPx: 956,
   // these times are all now hundredths of seconds
-  creditsPause: 500,
+  creditsPause: 500, // zero for no credits
   interCycle: 300,
-  interScore: 200,
+  interScore: 300,
   scoredPause: 100,
   slower: 0
 }

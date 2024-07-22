@@ -109,7 +109,7 @@ async function play() {
     scoreNum = 0,
     toggle = true,
     yieldMsg;
-  await sleep(config.interCycle);
+  if (config.fadeWords > 0) await sleep(config.interCycle);
   while (config.running) { // stopped with false in config
     if (paraNum == config.startingPoint) cycStart = Date.now();
     // loop forever ...
@@ -193,6 +193,8 @@ async function play() {
     if (config.fadeWords == 0) {
       displayElem.style.opacity = 0;
       await sleep(300);
+      paras[paraNum].forEach(p => document.getElementById(p).classList.remove("visible"));
+      await sleep(50);
     }
     // <<<
     // bump paraNum
@@ -201,11 +203,13 @@ async function play() {
       console.log("--- end of cycle --- Duration:", msToTime(Date.now() - cycStart)); // DEBUG
       paraNum = config.startingPoint;
       await sleep(config.interCycle); // end of cycle pause
-      let bl = document.getElementById("byline");
-      bl.style.opacity = 1;
-      await sleep(config.creditsPause); // credits pause
-      bl.style.opacity = 0;
-      await sleep(config.interCycle); // end of cycle pause
+      if (config.creditsPause > 0) {
+        let bl = document.getElementById("byline");
+        bl.style.opacity = 1;
+        await sleep(config.creditsPause); // credits pause
+        bl.style.opacity = 0;
+        await sleep(config.interCycle); // end of cycle pause
+      }
     }
     // bump scoreNum
     scoreNum = ++scoreNum % scores.length;

@@ -136,7 +136,7 @@ async function play() {
       score = scores[scoreNum];
     }
     // console.log(scoreSet, "scoreNum", scoreNum, scoreSet[scoreNum]); // DEBUG
-    console.log("number of items in score:", score.length);
+    console.log("score:", scoreNum, "score items:", score.length);
     //
     // This is where we inner-loop through each item in the current score and
     // display the string of its spel for the length of time in its pause property.

@@ -82,11 +82,12 @@ function linearScrs(_tstamps, startingPara, numParas) {
   for (let i = 0; i < numParas; i++) {
     let a = alignedSpels(_tstamps[startingPara + i], startingPara + i, spelNdx);
     spelNdx += a.length;
-    // adding autofade here
-    a.unshift({
-      id: "AUTOFADE",
-      pause: config.fadeWords
-    });
+    // >>>  would add autofade here:
+    // a.unshift({
+    //   id: "AUTOFADE",
+    //   pause: config.fadeWords
+    // });
+    // <<<
     scores.push(a);
   }
   return scores;
@@ -162,7 +163,8 @@ async function play() {
       yieldMsg =
         loopMsg + `, score: ${scoreNum}, item: ${idx}, paraNum: ${paraNum}, id: ${spelId}, `;
       yieldMsg += `string: '${str}', pause: ${score[idx].pause}`;
-      console.log(yieldMsg); // <<< (in other contexts:) yield yieldMsg;
+      // console.log(yieldMsg);
+      // <<< (in other contexts:) yield yieldMsg;
       //
       // >>> these next lines do all the work
       let elem;

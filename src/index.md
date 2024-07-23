@@ -1,13 +1,14 @@
 ---
 title: Reunion
 toc: false
-head: "<link rel='stylesheet' href='style.css' type='text/css' media='all' />"
+style: style.css
 header: false
 footer: false
 sidebar: false
 pager: false
 ---
-<!-- version 1.1 July 2024 -->
+<!-- head: "<link rel='stylesheet' href='style.css' type='text/css' media='all' />"
+could be used above to load Google fonts -->
 <div id="byline">
   <div class="clmleft">
     <span id="bytext"><cite>Steep 2024 • 1974 &nbsp;&nbsp;&nbsp; Reunion</cite></span>
@@ -19,7 +20,7 @@ pager: false
 <div id="display" class="fade"></div>
 
 ```js
-console.log("--- Reunion July 2024 v1.1 ---");
+console.log("--- Reunion July 2024 v1.3 ---");
 import { config } from "/config.js";
 // --- DEBUG congiguration
 // config.startingPoint = 2; // DEBUG when RECORDING & REDUCTING EDIT here
